@@ -118,20 +118,24 @@ sevens = [[image_7, [0, 0, 0, 1]],
         [make_random_pixel(image_7), [0, 0, 0, 1]],
         [make_random_pixel(image_7), [0, 0, 0, 1]]]
 
-random.shuffle(zeros)
-random.shuffle(twos)
-random.shuffle(fours)
-random.shuffle(sevens)
 
-train_datas = np.concatenate((np.concatenate((zeros[:9], twos[:9])), np.concatenate((fours[:9], sevens[:9]))))
-test_datas = np.concatenate((np.concatenate((zeros[9:], twos[9:])), np.concatenate((fours[9:], sevens[9:]))))
+def prepare_dataset():
+    random.shuffle(zeros)
+    random.shuffle(twos)
+    random.shuffle(fours)
+    random.shuffle(sevens)
 
-train_data = []
-test_data = []
-for i in range(len(train_datas)):
-    train_data.append([np.asarray(train_datas[i][0]).reshape(-1), train_datas[i][1]])
-for i in range(len(test_datas)):
-    test_data.append([np.asarray(test_datas[i][0]).reshape(-1), test_datas[i][1]])
+    train_datas = np.concatenate((np.concatenate((zeros[:9], twos[:9])), np.concatenate((fours[:9], sevens[:9]))))
+    test_datas = np.concatenate((np.concatenate((zeros[9:], twos[9:])), np.concatenate((fours[9:], sevens[9:]))))
+
+    train_data = []
+    test_data = []
+    for i in range(len(train_datas)):
+        train_data.append([np.asarray(train_datas[i][0]).reshape(-1), train_datas[i][1]])
+    for i in range(len(test_datas)):
+        test_data.append([np.asarray(test_datas[i][0]).reshape(-1), test_datas[i][1]])
+
+    return train_data, test_data
 
 
 def main():
@@ -150,6 +154,8 @@ def main():
     Error = 0
     n_learn = 0.01
     alpha = 0.9
+
+    train_data, test_data = prepare_dataset()
 
     for j in range(1000):
         Error = 0
